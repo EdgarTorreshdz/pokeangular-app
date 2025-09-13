@@ -1,1 +1,63 @@
-<p>dashboard works!</p>
+<div class="dashboard">
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="hero-content">
+      <div class="hero-icon">🐾</div>
+      <h1 class="hero-title">PokéAPI Explorer</h1>
+      <p class="hero-subtitle">Descubre el vasto universo Pokémon a través de nuestra API completa</p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-number">8</span>
+          <span class="stat-label">Categorías</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">1000+</span>
+          <span class="stat-label">Pokémon</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">∞</span>
+          <span class="stat-label">Datos</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-background">
+      <div class="floating-pokeball"></div>
+      <div class="floating-pokeball"></div>
+      <div class="floating-pokeball"></div>
+    </div>
+  </div>
+
+  <!-- Features Grid -->
+  <div class="features-section">
+    <h2 class="features-title">Explora el Mundo Pokémon</h2>
+    <p class="features-subtitle">Selecciona una categoría para comenzar tu aventura</p>
+
+    <div class="features-grid">
+      <div class="feature-card"
+            *ngFor="let feature of features"
+            [routerLink]="feature.route"
+            [class]="feature.class"
+            [title]="feature.title">
+        <div class="card-content">
+          <div class="card-icon">{{ feature.icon }}</div>
+          <h3 class="card-title">{{ feature.title }}</h3>
+          <p class="card-description">{{ feature.description }}</p>
+          <div class="card-hover-effect"></div>
+        </div>
+        <div class="card-arrow">→</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Call to Action -->
+  <div class="cta-section">
+    <div class="cta-content">
+      <h2>¿Listo para explorar?</h2>
+      <p>Comienza tu journey Pokémon hoy mismo</p>
+      <button class="cta-button" routerLink="/pokemon">
+        <span>Empezar Aventura</span>
+        <span class="cta-arrow">→</span>
+      </button>
+    </div>
+  </div>
+</div>

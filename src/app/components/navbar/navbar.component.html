@@ -1,1 +1,53 @@
-<p>navbar works!</p>
+<nav class="navbar">
+  <div class="nav-container">
+    <!-- Logo -->
+    <a routerLink="/" class="nav-logo">
+      <div class="logo-icon">🐾</div>
+      <h1>PokéAPI Explorer</h1>
+    </a>
+
+    <!-- Menú para desktop -->
+    <ul class="nav-menu">
+      <li class="nav-item" *ngFor="let item of navItems">
+        <a
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          class="nav-link"
+          [title]="item.title">
+          <span class="nav-icon">{{ item.icon }}</span>
+          <span class="nav-text">{{ item.text }}</span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- Menú móvil -->
+    <button class="mobile-menu-btn" (click)="toggleMobileMenu()">
+      <span class="hamburger"></span>
+    </button>
+
+    <!-- Menú móvil desplegable -->
+    <div class="mobile-menu" [class.active]="isMobileMenuOpen">
+      <div class="mobile-menu-header">
+        <h2>Menú</h2>
+        <button class="close-btn" (click)="toggleMobileMenu()">×</button>
+      </div>
+      <div class="mobile-nav-items">
+        <a
+          *ngFor="let item of navItems"
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          class="mobile-nav-link"
+          (click)="toggleMobileMenu()"
+          [title]="item.title">
+          <span class="mobile-nav-icon">{{ item.icon }}</span>
+          <span class="mobile-nav-text">{{ item.text }}</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Overlay para móvil -->
+    <div class="mobile-overlay"
+          [class.active]="isMobileMenuOpen"
+          (click)="toggleMobileMenu()"></div>
+  </div>
+</nav>

@@ -6,97 +6,68 @@ import { CommonModule } from '@angular/common';
   selector: 'app-dashboard',
   standalone: true,
   imports: [CommonModule, RouterLink],
-  template: `
-    <div class="dashboard">
-      <h1>PokéAPI Explorer</h1>
-      <p class="subtitle">Explora todos los endpoints de la PokéAPI</p>
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css']
 
-      <div class="grid">
-        <div class="card" routerLink="/pokemon">
-          <h3>Pokémon</h3>
-          <p>Explora todos los Pokémon</p>
-        </div>
-
-        <div class="card" routerLink="/types">
-          <h3>Tipos</h3>
-          <p>Tipos de Pokémon y sus relaciones</p>
-        </div>
-
-        <div class="card" routerLink="/abilities">
-          <h3>Habilidades</h3>
-          <p>Habilidades de Pokémon</p>
-        </div>
-
-        <div class="card" routerLink="/moves">
-          <h3>Movimientos</h3>
-          <p>Movimientos y sus efectos</p>
-        </div>
-
-        <div class="card" routerLink="/items">
-          <h3>Items</h3>
-          <p>Items del mundo Pokémon</p>
-        </div>
-
-        <div class="card" routerLink="/generations">
-          <h3>Generaciones</h3>
-          <p>Generaciones de juegos</p>
-        </div>
-
-        <div class="card" routerLink="/locations">
-          <h3>Ubicaciones</h3>
-          <p>Lugares del mundo Pokémon</p>
-        </div>
-
-        <div class="card" routerLink="/evolutions">
-          <h3>Evoluciones</h3>
-          <p>Cadenas evolutivas</p>
-        </div>
-      </div>
-    </div>
-  `,
-  styles: [`
-    .dashboard {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem;
-    }
-    h1 {
-      text-align: center;
-      color: #333;
-      margin-bottom: 0.5rem;
-    }
-    .subtitle {
-      text-align: center;
-      color: #666;
-      margin-bottom: 3rem;
-      font-size: 1.2rem;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-    }
-    .card {
-      background: white;
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      cursor: pointer;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-    }
-    .card h3 {
-      color: #333;
-      margin-bottom: 0.5rem;
-    }
-    .card p {
-      color: #666;
-      margin: 0;
-    }
-  `]
 })
-export class DashboardComponent {}
+export class DashboardComponent {
+  // Array de features con información
+  features = [
+    {
+      route: '/pokemon',
+      icon: '🐾',
+      title: 'Pokémon',
+      description: 'Explora todos los Pokémon con sus estadísticas y detalles',
+      class: 'feature-pokemon'
+    },
+    {
+      route: '/types',
+      icon: '⚡',
+      title: 'Tipos',
+      description: 'Descubre las relaciones entre tipos Pokémon',
+      class: 'feature-types'
+    },
+    {
+      route: '/abilities',
+      icon: '🌟',
+      title: 'Habilidades',
+      description: 'Habilidades especiales de los Pokémon',
+      class: 'feature-abilities'
+    },
+    {
+      route: '/moves',
+      icon: '🎯',
+      title: 'Movimientos',
+      description: 'Ataques y técnicas de combate',
+      class: 'feature-moves'
+    },
+    {
+      route: '/items',
+      icon: '🎒',
+      title: 'Items',
+      description: 'Objetos y herramientas del mundo Pokémon',
+      class: 'feature-items'
+    },
+    {
+      route: '/generations',
+      icon: '🔄',
+      title: 'Generaciones',
+      description: 'Diferentes eras de juegos Pokémon',
+      class: 'feature-generations'
+    },
+    {
+      route: '/locations',
+      icon: '🗺️',
+      title: 'Ubicaciones',
+      description: 'Lugares y regiones para explorar',
+      class: 'feature-locations'
+    },
+    {
+      route: '/evolutions',
+      icon: '📈',
+      title: 'Evoluciones',
+      description: 'Cadenas evolutivas y transformaciones',
+      class: 'feature-evolutions'
+    }
+  ];
+}

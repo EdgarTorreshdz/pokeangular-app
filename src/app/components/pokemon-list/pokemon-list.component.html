@@ -1,22 +1,107 @@
 <div class="container">
-  <h1>Pokédex</h1>
-
-  <div class="pokemon-grid">
-    <div *ngFor="let pokemon of pokemons" class="pokemon-card" (click)="selectPokemon(pokemon)">
-      <img [src]="pokemon.sprites.front_default" [alt]="pokemon.name">
-      <h3>#{{pokemon.id}} {{pokemon.name | titlecase}}</h3>
-      <div class="types">
-        <span *ngFor="let type of pokemon.types" class="type-badge type-{{type.type.name}}">
-          {{type.type.name}}
-        </span>
-      </div>
+  <!-- Header -->
+  <div class="header">
+    <h1 class="title">Pokédex Nacional</h1>
+    <p class="subtitle">Explora todos los Pokémon descubiertos hasta ahora</p>
+    <div class="stats">
+      <span class="stat">{{ pokemons.length }} Pokémon cargados</span>
     </div>
   </div>
 
-  <div class="load-more-container">
-    <button *ngIf="!loading" (click)="loadMore()" class="load-more-btn">Cargar más Pokémon</button>
-    <div *ngIf="loading" class="loading">Cargando...</div>
+  <!-- Error Message -->
+  <app-error-message
+    *ngIf="error"
+    [message]="error"
+    [showRetry]="true"
+    (onRetry)="loadPokemons()">
+  </app-error-message>
+
+  <!-- Pokemon Grid -->
+  <div class="pokemon-grid">
+    <div
+      *ngFor="let pokemon of pokemons; trackBy: trackByPokemonId"
+      class="pokemon-card"
+      (click)="selectPokemon(pokemon)"
+      [class]="'type-' + getPrimaryType(pokemon)">
+
+      <div class="card-header">
+        <span class="pokemon-id">#{{ pokemon.id.toString().padStart(3, '0') }}</span>
+        <span class="pokemon-generation">Gen {{ getGeneration(pokemon.id) }}</span>
+      </div>
+
+      <div class="pokemon-image">
+        <img
+          [src]="getPokemonImage(pokemon)"
+          [alt]="pokemon.name"
+          (error)="handleImageError($event)"
+          loading="lazy">
+      </div>
+
+      <div class="pokemon-info">
+        <h3 class="pokemon-name">{{ pokemon.name | titlecase }}</h3>
+
+        <div class="types">
+          <span
+            *ngFor="let type of pokemon.types"
+            class="type-badge type-{{ type.type.name }}">
+            {{ type.type.name | uppercase }}
+          </span>
+        </div>
+
+        <div class="pokemon-stats">
+          <div class="stat">
+            <span class="stat-value">⭐ {{ getBaseExperience(pokemon) }}</span>
+            <span class="stat-label">EXP</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">⚖️ {{ getWeight(pokemon) }}kg</span>
+            <span class="stat-label">Peso</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">📏 {{ getHeight(pokemon) }}m</span>
+            <span class="stat-label">Altura</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-hover-effect"></div>
+    </div>
   </div>
 
-  <app-pokemon-detail *ngIf="selectedPokemon" [pokemon]="selectedPokemon" (close)="selectedPokemon = null"></app-pokemon-detail>
+  <!-- Loading and Load More -->
+  <div class="loading-container">
+    <app-loading-spinner
+      *ngIf="loading && pokemons.length === 0"
+      containerClass="pokemon-spinner">
+    </app-loading-spinner>
+
+    <app-loading-spinner
+      *ngIf="loadingMore"
+      containerClass="small-spinner"
+      text="Cargando más Pokémon...">
+    </app-loading-spinner>
+
+    <button
+      *ngIf="!loadingMore && hasMore && !loading"
+      (click)="loadMore()"
+      class="load-more-btn">
+      <span>🔄 Cargar más Pokémon</span>
+    </button>
+
+    <div *ngIf="!hasMore && pokemons.length > 0" class="end-message">
+      <p>🎉 ¡Has llegado al final! {{ pokemons.length }} Pokémon cargados.</p>
+    </div>
+  </div>
+
+  <!-- Pokemon Detail Modal -->
+  <app-pokemon-detail
+    *ngIf="selectedPokemon"
+    [pokemon]="selectedPokemon"
+    (close)="closeDetail()">
+  </app-pokemon-detail>
+
+  <!-- Scroll to Top Button -->
+  <button *ngIf="pokemons.length > 12" class="scroll-top-btn" (click)="scrollToTop()">
+    ↑
+  </button>
 </div>
