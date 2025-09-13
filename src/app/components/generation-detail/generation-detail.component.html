@@ -1,0 +1,104 @@
+<div class="container">
+  <button class="back-btn" [routerLink]="['/generations']">← Volver a Generaciones</button>
+
+  <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+
+  <app-error-message
+    *ngIf="error && !loading"
+    [message]="error"
+    [showRetry]="true"
+    (onRetry)="generation && loadGeneration(generation.name)">
+  </app-error-message>
+
+  <div *ngIf="generation && !loading" class="generation-detail">
+    <div class="generation-header">
+      <h1>{{ getGenerationDisplayName(generation.name) }}</h1>
+      <span class="generation-id">#{{ generation.id }}</span>
+    </div>
+
+    <div class="generation-content">
+      <div class="main-info">
+        <div class="info-card">
+          <h3>Información General</h3>
+          <div class="details-grid">
+            <div class="detail-item">
+              <span class="label">Región principal:</span>
+              <span class="value">{{ generation.main_region && generation.main_region.name ? (generation.main_region.name | titlecase) : 'N/A' }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Especies Pokémon:</span>
+              <span class="value">{{ getPokemonSpecies(generation).length }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Movimientos:</span>
+              <span class="value">{{ getMoves(generation).length }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Habilidades:</span>
+              <span class="value">{{ getAbilities(generation).length }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Tipos:</span>
+              <span class="value">{{ getTypes(generation).length }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Grupos de versiones:</span>
+              <span class="value">{{ getVersionGroups(generation).length }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card" *ngIf="getPokemonSpecies(generation).length > 0">
+          <h3>Especies Pokémon introducidas</h3>
+          <div class="species-list">
+            <span
+              *ngFor="let species of getPokemonSpecies(generation).slice(0, 15)"
+              class="species-tag">
+              {{ species.name | titlecase }}
+            </span>
+            <span *ngIf="getPokemonSpecies(generation).length > 15" class="more-species">
+              +{{ getPokemonSpecies(generation).length - 15 }} más...
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="side-info">
+        <div class="info-card">
+          <h3>Características de la Generación</h3>
+          <div class="features-list">
+            <div class="feature-item" *ngIf="getMoves(generation).length > 0">
+              <span class="feature-icon">⚡</span>
+              <span class="feature-text">
+                {{ getMoves(generation).length }} movimientos nuevos
+              </span>
+            </div>
+            <div class="feature-item" *ngIf="getAbilities(generation).length > 0">
+              <span class="feature-icon">🌟</span>
+              <span class="feature-text">
+                {{ getAbilities(generation).length }} habilidades nuevas
+              </span>
+            </div>
+            <div class="feature-item" *ngIf="getTypes(generation).length > 0">
+              <span class="feature-icon">🎯</span>
+              <span class="feature-text">
+                {{ getTypes(generation).length }} tipos nuevos
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card" *ngIf="getVersionGroups(generation).length > 0">
+          <h3>Juegos de esta generación</h3>
+          <div class="games-list">
+            <span
+              *ngFor="let versionGroup of getVersionGroups(generation)"
+              class="game-tag">
+              {{ versionGroup.name | titlecase }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="header">
+    <h1>Movimientos Pokémon</h1>
+    <p>Explora todos los movimientos disponibles en el mundo Pokémon</p>
+  </div>
+
+  <app-error-message
+    *ngIf="error"
+    [message]="error"
+    [showRetry]="true"
+    (onRetry)="loadMoves()">
+  </app-error-message>
+
+  <div class="moves-grid">
+    <div
+      *ngFor="let move of moves"
+      class="move-card"
+      (click)="viewMoveDetail(move.name)">
+      <div class="move-header">
+        <h3>{{ move.name | titlecase }}</h3>
+        <span class="move-id">#{{ getMoveId(move.url) }}</span>
+      </div>
+      <p class="move-description">
+        Haz clic para ver los detalles de este movimiento
+      </p>
+    </div>
+  </div>
+
+  <div class="load-more-container">
+    <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+    <button
+      *ngIf="hasMore && !loading"
+      (click)="loadMore()"
+      class="load-more-btn">
+      Cargar más movimientos
+    </button>
+    <p *ngIf="!hasMore && !loading" class="no-more">
+      No hay más movimientos para cargar
+    </p>
+  </div>
+</div>

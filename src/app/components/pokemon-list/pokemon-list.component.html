@@ -1,0 +1,22 @@
+<div class="container">
+  <h1>Pokédex</h1>
+
+  <div class="pokemon-grid">
+    <div *ngFor="let pokemon of pokemons" class="pokemon-card" (click)="selectPokemon(pokemon)">
+      <img [src]="pokemon.sprites.front_default" [alt]="pokemon.name">
+      <h3>#{{pokemon.id}} {{pokemon.name | titlecase}}</h3>
+      <div class="types">
+        <span *ngFor="let type of pokemon.types" class="type-badge type-{{type.type.name}}">
+          {{type.type.name}}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="load-more-container">
+    <button *ngIf="!loading" (click)="loadMore()" class="load-more-btn">Cargar más Pokémon</button>
+    <div *ngIf="loading" class="loading">Cargando...</div>
+  </div>
+
+  <app-pokemon-detail *ngIf="selectedPokemon" [pokemon]="selectedPokemon" (close)="selectedPokemon = null"></app-pokemon-detail>
+</div>

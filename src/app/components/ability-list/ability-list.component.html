@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="header">
+    <h1>Habilidades Pokémon</h1>
+    <p>Explora todas las habilidades disponibles en el mundo Pokémon</p>
+  </div>
+
+  <app-error-message
+    *ngIf="error"
+    [message]="error"
+    [showRetry]="true"
+    (onRetry)="loadAbilities()">
+  </app-error-message>
+
+  <div class="abilities-grid">
+    <div
+      *ngFor="let ability of abilities"
+      class="ability-card"
+      (click)="viewAbilityDetail(ability.name)">
+      <div class="ability-header">
+        <h3>{{ ability.name | titlecase }}</h3>
+        <span class="ability-id">#{{ getAbilityId(ability.url) }}</span>
+      </div>
+      <p class="ability-description">
+        Haz clic para ver los detalles de esta habilidad
+      </p>
+    </div>
+  </div>
+
+  <div class="load-more-container">
+    <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+    <button
+      *ngIf="hasMore && !loading"
+      (click)="loadMore()"
+      class="load-more-btn">
+      Cargar más habilidades
+    </button>
+    <p *ngIf="!hasMore && !loading" class="no-more">
+      No hay más habilidades para cargar
+    </p>
+  </div>
+</div>

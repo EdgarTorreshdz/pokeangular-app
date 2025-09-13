@@ -1,0 +1,110 @@
+<div class="container">
+  <button class="back-btn" [routerLink]="['/locations']">← Volver a Ubicaciones</button>
+
+  <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+
+  <app-error-message
+    *ngIf="error && !loading"
+    [message]="error"
+    [showRetry]="true"
+    (onRetry)="location && loadLocation(location.name)">
+  </app-error-message>
+
+  <div *ngIf="location && !loading" class="location-detail">
+    <div class="location-header">
+      <h1>{{ location.name | titlecase }}</h1>
+      <span class="location-id">#{{ location.id }}</span>
+    </div>
+
+    <div class="location-content">
+      <div class="main-info">
+        <div class="info-card">
+          <h3>Información General</h3>
+          <div class="details-grid">
+            <div class="detail-item">
+              <span class="label">Región:</span>
+              <span class="value">{{ location.region && location.region.name ? (location.region.name | titlecase) : 'N/A' }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Áreas:</span>
+              <span class="value">{{ getAreas(location).length }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Juegos disponibles:</span>
+              <span class="value">{{ getGameIndices(location).length }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card" *ngIf="getAreas(location).length > 0">
+          <h3>Áreas de esta ubicación</h3>
+          <div class="areas-list">
+            <span
+              *ngFor="let area of getAreas(location)"
+              class="area-tag">
+              {{ area.name | titlecase }}
+            </span>
+          </div>
+        </div>
+
+        <div class="info-card" *ngIf="locationAreas.length > 0">
+          <h3>Encuentros Pokémon</h3>
+          <app-loading-spinner *ngIf="loadingAreas"></app-loading-spinner>
+          <div *ngIf="!loadingAreas" class="encounters-list">
+            <div *ngFor="let area of locationAreas" class="area-encounters">
+              <h4>{{ area.name | titlecase }}</h4>
+              <div class="pokemon-grid">
+                <div
+                  *ngFor="let encounter of getPokemonEncounters(area).slice(0, 6)"
+                  class="pokemon-encounter">
+                  <span class="pokemon-name">{{ encounter.pokemon.name | titlecase }}</span>
+                  <span class="encounter-methods">
+                    {{ getEncounterMethods(area).length }} métodos
+                  </span>
+                </div>
+                <div *ngIf="getPokemonEncounters(area).length > 6" class="more-encounters">
+                  +{{ getPokemonEncounters(area).length - 6 }} más...
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="side-info">
+        <div class="info-card">
+          <h3>Detalles de la Ubicación</h3>
+          <div class="location-details">
+            <div class="detail-item">
+              <span class="label">ID:</span>
+              <span class="value">{{ location.id }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Nombre:</span>
+              <span class="value">{{ location.name | titlecase }}</span>
+            </div>
+            <div class="detail-item" *ngIf="location.region">
+              <span class="label">Región:</span>
+              <span class="value">{{ location.region.name | titlecase }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Áreas conectadas:</span>
+              <span class="value">{{ getAreas(location).length }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card" *ngIf="getGameIndices(location).length > 0">
+          <h3>Disponible en juegos</h3>
+          <div class="games-list">
+            <span
+              *ngFor="let game of getGameIndices(location)"
+              class="game-tag">
+              {{ game.version.name | titlecase }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

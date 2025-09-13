@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="header">
+    <h1>Items Pokémon</h1>
+    <p>Explora todos los items disponibles en el mundo Pokémon</p>
+  </div>
+
+  <app-error-message
+    *ngIf="error"
+    [message]="error"
+    [showRetry]="true"
+    (onRetry)="loadItems()">
+  </app-error-message>
+
+  <div class="items-grid">
+    <div
+      *ngFor="let item of items"
+      class="item-card"
+      (click)="viewItemDetail(item.name)">
+      <div class="item-header">
+        <h3>{{ item.name | titlecase }}</h3>
+        <span class="item-id">#{{ getItemId(item.url) }}</span>
+      </div>
+      <p class="item-description">
+        Haz clic para ver los detalles de este item
+      </p>
+    </div>
+  </div>
+
+  <div class="load-more-container">
+    <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+    <button
+      *ngIf="hasMore && !loading"
+      (click)="loadMore()"
+      class="load-more-btn">
+      Cargar más items
+    </button>
+    <p *ngIf="!hasMore && !loading" class="no-more">
+      No hay más items para cargar
+    </p>
+  </div>
+</div>

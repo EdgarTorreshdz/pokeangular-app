@@ -1,0 +1,35 @@
+import { Routes } from '@angular/router';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { PokemonListComponent } from './components/pokemon-list/pokemon-list.component';
+import { TypeListComponent } from './components/type-list/type-list.component';
+import { AbilityListComponent } from './components/ability-list/ability-list.component';
+import { MoveListComponent } from './components/move-list/move-list.component';
+import { ItemListComponent } from './components/item-list/item-list.component';
+import { GenerationListComponent } from './components/generation-list/generation-list.component';
+import { LocationListComponent } from './components/location-list/location-list.component';
+import { EvolutionListComponent } from './components/evolution-list/evolution-list.component';
+import { MoveDetailComponent } from './components/move-detail/move-detail.component';
+import { AbilityDetailComponent } from './components/ability-detail/ability-detail.component';
+import { ItemDetailComponent } from './components/item-detail/item-detail.component';
+import { GenerationDetailComponent } from './components/generation-detail/generation-detail.component';
+import { LocationDetailComponent } from './components/location-detail/location-detail.component';
+import { EvolutionDetailComponent } from './components/evolution-detail/evolution-detail.component';
+
+export const routes: Routes = [
+  { path: '', component: DashboardComponent },
+  { path: 'pokemon', component: PokemonListComponent },
+  { path: 'types', component: TypeListComponent },
+  { path: 'abilities', component: AbilityListComponent },
+  { path: 'abilities/:name', component: AbilityDetailComponent },
+  { path: 'moves', component: MoveListComponent },
+  { path: 'moves/:name', component: MoveDetailComponent },
+  { path: 'items', component: ItemListComponent },
+  { path: 'items/:name', component: ItemDetailComponent },
+  { path: 'generations', component: GenerationListComponent },
+  { path: 'generations/:name', component: GenerationDetailComponent },
+  { path: 'locations', component: LocationListComponent },
+  { path: 'locations/:name', component: LocationDetailComponent },
+  { path: 'evolutions', component: EvolutionListComponent },
+  { path: 'evolutions/:id', component: EvolutionDetailComponent },
+  { path: '**', redirectTo: '' }
+];

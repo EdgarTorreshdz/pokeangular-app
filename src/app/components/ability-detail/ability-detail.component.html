@@ -1,0 +1,66 @@
+<div class="container">
+  <button class="back-btn" [routerLink]="['/abilities']">← Volver a Habilidades</button>
+
+  <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+
+  <app-error-message
+    *ngIf="error && !loading"
+    [message]="error"
+    [showRetry]="true"
+    (onRetry)="ability && loadAbility(ability.name)">
+  </app-error-message>
+
+  <div *ngIf="ability && !loading" class="ability-detail">
+    <div class="ability-header">
+      <h1>{{ ability.name | titlecase }}</h1>
+      <span class="ability-id">#{{ ability.id }}</span>
+    </div>
+
+    <div class="ability-content">
+      <div class="main-info">
+        <div class="info-card">
+          <h3>Descripción Corta</h3>
+          <p class="effect-text">{{ getShortEnglishEffect(ability) }}</p>
+        </div>
+
+        <div class="info-card">
+          <h3>Efecto Completo</h3>
+          <p class="effect-text">{{ getEnglishEffect(ability) }}</p>
+        </div>
+      </div>
+
+      <div class="side-info">
+        <div class="info-card">
+          <h3>Información General</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="label">Generación:</span>
+              <span class="value">{{ ability.generation.name | titlecase }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Pokémon con esta habilidad:</span>
+              <span class="value">{{ ability.pokemon.length }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Serie Principal:</span>
+              <span class="value">{{ ability.is_main_series ? 'Sí' : 'No' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card" *ngIf="ability.pokemon.length > 0">
+          <h3>Pokémon con esta habilidad</h3>
+          <div class="pokemon-list">
+            <span
+              *ngFor="let pokemon of ability.pokemon"
+              class="pokemon-tag"
+              [class.hidden]="pokemon.is_hidden">
+              {{ pokemon.pokemon.name | titlecase }}
+              <span *ngIf="pokemon.is_hidden" class="hidden-indicator">(Oculta)</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

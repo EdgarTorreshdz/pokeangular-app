@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="header">
+    <h1>Generaciones Pokémon</h1>
+    <p>Explora todas las generaciones de juegos Pokémon</p>
+  </div>
+
+  <app-error-message
+    *ngIf="error"
+    [message]="error"
+    [showRetry]="true"
+    (onRetry)="loadGenerations()">
+  </app-error-message>
+
+  <div class="generations-grid">
+    <div
+      *ngFor="let generation of generations"
+      class="generation-card"
+      (click)="viewGenerationDetail(generation.name)">
+      <div class="generation-header">
+        <h3>{{ getGenerationDisplayName(generation.name) }}</h3>
+        <span class="generation-id">#{{ getGenerationId(generation.url) }}</span>
+      </div>
+      <div class="generation-content">
+        <p class="generation-description">
+          Haz clic para explorar esta generación
+        </p>
+        <div class="generation-badge">
+          {{ generation.name.replace('generation-', '').toUpperCase() }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+</div>

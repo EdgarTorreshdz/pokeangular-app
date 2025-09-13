@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="header">
+    <h1>Ubicaciones Pokémon</h1>
+    <p>Explora todos los lugares del mundo Pokémon</p>
+  </div>
+
+  <app-error-message
+    *ngIf="error"
+    [message]="error"
+    [showRetry]="true"
+    (onRetry)="loadLocations()">
+  </app-error-message>
+
+  <div class="locations-grid">
+    <div
+      *ngFor="let location of locations"
+      class="location-card"
+      (click)="viewLocationDetail(location.name)">
+      <div class="location-header">
+        <h3>{{ location.name | titlecase }}</h3>
+        <span class="location-id">#{{ getLocationId(location.url) }}</span>
+      </div>
+      <p class="location-description">
+        Haz clic para explorar esta ubicación
+      </p>
+    </div>
+  </div>
+
+  <div class="load-more-container">
+    <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+    <button
+      *ngIf="hasMore && !loading"
+      (click)="loadMore()"
+      class="load-more-btn">
+      Cargar más ubicaciones
+    </button>
+    <p *ngIf="!hasMore && !loading" class="no-more">
+      No hay más ubicaciones para cargar
+    </p>
+  </div>
+</div>

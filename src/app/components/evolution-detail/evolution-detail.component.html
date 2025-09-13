@@ -1,0 +1,101 @@
+<div class="container">
+  <button class="back-btn" [routerLink]="['/evolutions']">← Volver a Evoluciones</button>
+
+  <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+
+  <app-error-message
+    *ngIf="error && !loading"
+    [message]="error"
+    [showRetry]="true"
+    (onRetry)="evolutionChain && loadEvolutionChain(evolutionChain.id)">
+  </app-error-message>
+
+  <div *ngIf="evolutionChain && !loading" class="evolution-detail">
+    <div class="evolution-header">
+      <h1>Cadena Evolutiva #{{ evolutionChain.id }}</h1>
+      <span class="evolution-id">ID: {{ evolutionChain.id }}</span>
+    </div>
+
+    <div class="evolution-content">
+      <div class="main-info">
+        <div class="info-card">
+          <h3>Información General</h3>
+          <div class="details-grid">
+            <div class="detail-item">
+              <span class="label">Item bebé:</span>
+              <span class="value">{{ getBabyTriggerItem() | titlecase }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Especies en cadena:</span>
+              <span class="value">{{ countSpecies(evolutionChain.chain) }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Niveles de evolución:</span>
+              <span class="value">{{ countEvolutionLevels(evolutionChain.chain) }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <h3>Cadena Evolutiva Completa</h3>
+          <div class="evolution-chain">
+            <div class="evolution-tree">
+              <div *ngFor="let evolution of flattenEvolutionChain(evolutionChain.chain)"
+                   class="evolution-stage" [style.margin-left.px]="evolution.level * 40">
+                <div class="evolution-node">
+                  <div class="pokemon-name">{{ evolution.species.name | titlecase }}</div>
+                  <div class="evolution-details" *ngIf="evolution.evolution_details.length > 0">
+                    {{ getEvolutionDetails(evolution) }}
+                  </div>
+                </div>
+                <div class="evolution-arrow" *ngIf="evolution.evolves_to.length > 0">↓</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="side-info">
+        <div class="info-card">
+          <h3>Detalles de la Cadena</h3>
+          <div class="chain-details">
+            <div class="detail-item">
+              <span class="label">ID de cadena:</span>
+              <span class="value">{{ evolutionChain.id }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Especie base:</span>
+              <span class="value">{{ evolutionChain.chain.species.name | titlecase }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Es bebé:</span>
+              <span class="value">{{ evolutionChain.chain.is_baby ? 'Sí' : 'No' }}</span>
+            </div>
+            <div class="detail-item" *ngIf="evolutionChain.baby_trigger_item">
+              <span class="label">Item requerido:</span>
+              <span class="value">{{ evolutionChain.baby_trigger_item.name | titlecase }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <h3>Estadísticas de la Cadena</h3>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <span class="stat-number">{{ countSpecies(evolutionChain.chain) }}</span>
+              <span class="stat-label">Especies</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">{{ countEvolutions(evolutionChain.chain) }}</span>
+              <span class="stat-label">Evoluciones</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">{{ countEvolutionLevels(evolutionChain.chain) }}</span>
+              <span class="stat-label">Niveles</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

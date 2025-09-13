@@ -1,0 +1,44 @@
+<div class="container">
+  <div class="header">
+    <h1>Cadenas Evolutivas Pokémon</h1>
+    <p>Explora todas las evoluciones del mundo Pokémon</p>
+  </div>
+
+  <app-error-message
+    *ngIf="error"
+    [message]="error"
+    [showRetry]="true"
+    (onRetry)="loadEvolutionChains()">
+  </app-error-message>
+
+  <div class="evolution-chains-grid">
+    <div
+      *ngFor="let chain of evolutionChains"
+      class="evolution-chain-card"
+      (click)="viewEvolutionDetail(chain.url)">
+      <div class="chain-header">
+        <h3>Cadena Evolutiva #{{ getChainId(chain.url) }}</h3>
+        <span class="chain-id">ID: {{ getChainId(chain.url) }}</span>
+      </div>
+      <p class="chain-description">
+        Haz clic para explorar esta cadena evolutiva
+      </p>
+      <div class="chain-badge">
+        Evolución
+      </div>
+    </div>
+  </div>
+
+  <div class="load-more-container">
+    <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+    <button
+      *ngIf="hasMore && !loading"
+      (click)="loadMore()"
+      class="load-more-btn">
+      Cargar más cadenas
+    </button>
+    <p *ngIf="!hasMore && !loading" class="no-more">
+      No hay más cadenas evolutivas para cargar
+    </p>
+  </div>
+</div>

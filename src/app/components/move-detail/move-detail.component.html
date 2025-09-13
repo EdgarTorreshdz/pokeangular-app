@@ -1,0 +1,103 @@
+<div class="container">
+  <button class="back-btn" [routerLink]="['/moves']">← Volver a Movimientos</button>
+
+  <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+
+  <app-error-message
+    *ngIf="error && !loading"
+    [message]="error"
+    [showRetry]="true"
+    (onRetry)="move && loadMove(move.name)">
+  </app-error-message>
+
+  <div *ngIf="move && !loading" class="move-detail">
+    <div class="move-header">
+      <h1>{{ move.name | titlecase }}</h1>
+      <span class="move-id">#{{ move.id }}</span>
+    </div>
+
+    <div class="move-content">
+      <div class="main-info">
+        <div class="info-card">
+          <h3>Descripción</h3>
+          <p class="flavor-text">{{ getEnglishFlavorText(move) }}</p>
+        </div>
+
+        <div class="info-card">
+          <h3>Efecto</h3>
+          <p class="effect-text">{{ getEnglishEffect(move) }}</p>
+        </div>
+
+        <div class="info-card">
+          <h3>Detalles del Movimiento</h3>
+          <div class="details-grid">
+            <div class="detail-item">
+              <span class="label">Potencia:</span>
+              <span class="value">{{ move.power || 'N/A' }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Precisión:</span>
+              <span class="value">{{ move.accuracy || 'N/A' }}%</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">PP:</span>
+              <span class="value">{{ move.pp }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Prioridad:</span>
+              <span class="value">{{ move.priority }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Tipo:</span>
+              <span class="value type-badge type-{{ move.type.name }}">
+                {{ move.type.name | titlecase }}
+              </span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Clase de daño:</span>
+              <span class="value">{{ move.damage_class && move.damage_class.name ? (move.damage_class.name | titlecase) : 'N/A' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="side-info">
+        <div class="info-card">
+          <h3>Información Adicional</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="label">Generación:</span>
+              <span class="value">{{ move.generation.name | titlecase }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Cambios de estadísticas:</span>
+              <span class="value">{{ getStatChanges(move) }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Pokémon que lo aprenden:</span>
+              <span class="value">{{ move.learned_by_pokemon?.length || 0 }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Probabilidad de efecto:</span>
+              <span class="value">{{ move.effect_chance || 'N/A' }}%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card" *ngIf="move.learned_by_pokemon && move.learned_by_pokemon.length > 0">
+          <h3>Pokémon que aprenden este movimiento</h3>
+          <div class="pokemon-list">
+            <span
+              *ngFor="let pokemon of move.learned_by_pokemon.slice(0, 10)"
+              class="pokemon-tag">
+              {{ pokemon.name | titlecase }}
+            </span>
+            <span *ngIf="move.learned_by_pokemon.length > 10" class="more-pokemon">
+              +{{ move.learned_by_pokemon.length - 10 }} más...
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

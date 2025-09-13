@@ -1,0 +1,103 @@
+<div class="container">
+  <button class="back-btn" [routerLink]="['/items']">← Volver a Items</button>
+
+  <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+
+  <app-error-message
+    *ngIf="error && !loading"
+    [message]="error"
+    [showRetry]="true"
+    (onRetry)="item && loadItem(item.name)">
+  </app-error-message>
+
+  <div *ngIf="item && !loading" class="item-detail">
+    <div class="item-header">
+      <div class="item-image">
+        <img
+          [src]="getItemImage(item)"
+          [alt]="item.name"
+          (error)="handleImageError($event)">
+      </div>
+      <div class="item-title">
+        <h1>{{ item.name | titlecase }}</h1>
+        <span class="item-id">#{{ item.id }}</span>
+      </div>
+    </div>
+
+    <div class="item-content">
+      <div class="main-info">
+        <div class="info-card">
+          <h3>Descripción</h3>
+          <p class="flavor-text">{{ getEnglishFlavorText(item) }}</p>
+        </div>
+
+        <div class="info-card">
+          <h3>Efecto</h3>
+          <p class="effect-text">{{ getEnglishEffect(item) }}</p>
+        </div>
+
+        <div class="info-card">
+          <h3>Detalles del Item</h3>
+          <div class="details-grid">
+            <div class="detail-item">
+              <span class="label">Costo:</span>
+              <span class="value">{{ item.cost }} ₽</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Categoría:</span>
+              <span class="value">{{ item.category?.name ? (item.category.name | titlecase) : 'N/A' }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Poder de lanzamiento:</span>
+              <span class="value">{{ item.fling_power || 'N/A' }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Efecto de lanzamiento:</span>
+              <span class="value">{{ item.fling_effect && item.fling_effect.name ? (item.fling_effect.name | titlecase) : 'Ninguno' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="side-info">
+        <div class="info-card">
+          <h3>Información Adicional</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="label">Atributos:</span>
+              <span class="value">
+                <span *ngFor="let attr of item.attributes" class="attribute-tag">
+                  {{ attr.name | titlecase }}
+                </span>
+                <span *ngIf="item.attributes.length === 0">Ninguno</span>
+              </span>
+            </div>
+            <div class="info-item">
+              <span class="label">Pokémon que lo portan:</span>
+              <span class="value">{{ getHeldByPokemonCount(item) }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Disponible en juegos:</span>
+              <span class="value">{{ item.game_indices?.length || 0 }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card" *ngIf="item.held_by_pokemon && item.held_by_pokemon.length > 0">
+          <h3>Pokémon que portan este item</h3>
+          <div class="pokemon-list">
+            <span
+              *ngFor="let holder of item.held_by_pokemon.slice(0, 8)"
+              class="pokemon-tag">
+              {{ holder.pokemon.name | titlecase }}
+              <span class="rarity">({{ holder.version_details[0]?.rarity }}%)</span>
+            </span>
+            <span *ngIf="item.held_by_pokemon.length > 8" class="more-pokemon">
+              +{{ item.held_by_pokemon.length - 8 }} más...
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
